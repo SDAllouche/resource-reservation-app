@@ -35,8 +35,11 @@ public class RessourceServiceImp implements RessourceService {
 
     @Override
     public Ressource updateRessource(int id, Ressource ressource) {
+
         Ressource existingRessource = ressourceRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Ressource not found with id " + id));
+        existingRessource.setNom(ressource.getNom());
+        existingRessource.setType(ressource.getType());
         return ressourceRepository.save(existingRessource);
     }
 

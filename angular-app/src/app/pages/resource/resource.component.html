@@ -18,31 +18,13 @@
             </div>
           </form>
         </div>
+        <!--<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateResourceModal" *ngIf="selectedResourceId !== null">
+          Update Resource
+        </button>-->
         <div class="col-md-6">
-          <button class="btn btn-outline-warning rounded-5" (click)="createResource()">
+          <button class="btn btn-outline-warning rounded-5" data-bs-toggle="modal" data-bs-target="#createResourceModal">
             <i class="bi bi-plus-lg"></i>
           </button>
-        </div>
-      </div>
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateResourceModal" *ngIf="selectedResourceId !== null">
-        Update Resource
-      </button>
-      <div class="modal fade" id="updateResourceModal" tabindex="-1" aria-labelledby="updateResourceModalLabel" aria-hidden="true" *ngIf="selectedResourceId !== null">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="updateResourceModalLabel">Update Resource</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <input [(ngModel)]="newResource.nom" placeholder="Resource Nom" class="form-control mb-2">
-              <input [(ngModel)]="newResource.type" placeholder="Resource Type" class="form-control mb-2">
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button type="button" class="btn btn-primary" (click)="updateResource()">Update</button>
-            </div>
-          </div>
         </div>
       </div>
       <div class="row mt-2">
@@ -64,7 +46,7 @@
                 <td>{{ resource.nom }}</td>
                 <td>{{ resource.type }}</td>
                 <td >
-                  <button class="btn btn-info" (click)="selectResource(resource)">
+                  <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateResourceModal" (click)="selectResource(resource)">
                     <i class="bi bi-pen"></i>
                   </button>
                 </td>
@@ -78,6 +60,44 @@
             </table>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="updateResourceModal" tabindex="-1" aria-labelledby="updateResourceModalLabel" aria-hidden="true" *ngIf="selectedResourceId !== null">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateResourceModalLabel">Update Resource</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input [(ngModel)]="newResource.nom" placeholder="Resource Nom" class="form-control mb-2">
+        <input [(ngModel)]="newResource.type" placeholder="Resource Type" class="form-control mb-2">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="updateResource()">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="createResourceModal" tabindex="-1" aria-labelledby="createResourceModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createResourceModalLabel">Create Ressource</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input [(ngModel)]="newResource.nom" placeholder="Resource Nom" class="form-control mb-2">
+        <input [(ngModel)]="newResource.type" placeholder="Resource Type" class="form-control mb-2">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="createResource()">Create</button>
       </div>
     </div>
   </div>

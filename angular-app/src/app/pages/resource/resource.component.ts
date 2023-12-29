@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, Renderer2} from '@angular/core';
 import {Resource} from "../../models/ressource.model";
 import {RessourceService} from "../../services/ressource.service";
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -21,16 +21,18 @@ export class ResourceComponent implements OnInit{
   resources: Resource[] = [];
   newResource: Resource = { id: 0, nom: '', type: '' };
   selectedResourceId: number | null = null;
-  searchResourceFormGroup: FormGroup;
+  searchResourceFormGroup!: FormGroup;
   errorMessage!: string;
 
-  constructor(private resourceService: RessourceService, private formBuilder: FormBuilder) {
-    this.searchResourceFormGroup = this.formBuilder.group({
-      keyword: new FormControl('')
-    });
+  constructor(private resourceService: RessourceService, private formBuilder: FormBuilder,
+              private fb :FormBuilder) {
+
   }
 
   ngOnInit() {
+    this.searchResourceFormGroup=this.fb.group({
+      keyword : this.fb.control(null)
+    })
     this.fetchResources();
       }
 
@@ -48,8 +50,6 @@ export class ResourceComponent implements OnInit{
   }
 
   updateResource() {
-
-
     if (this.selectedResourceId !== null) {
       this.resourceService.updateResource(this.selectedResourceId, this.newResource).subscribe(() => {
         this.fetchResources();
@@ -76,21 +76,16 @@ export class ResourceComponent implements OnInit{
 
   searchResource() {
 
-    let keyword = '';
-    const keywordControl = this.searchResourceFormGroup.get('keyword');
-    if (keywordControl) {
-      keyword = keywordControl.value;
-    }
+    let keyword=this.searchResourceFormGroup.value.keyword;
 
-    this.resourceService.searchResources(keyword).pipe(
-      catchError(error => {
-        this.errorMessage = 'Error occurred while searching for resources';
-        return of([]); // Return an empty array or appropriate default value
-      })
-    ).subscribe(data => {
-      console.log('Search results:', data);
-      this.resources = data;
-    });
+    if (keyword==''){
+      this.fetchResources();
+    }
+    this.resourceService.searchResources(keyword).subscribe({
+      next :data=>{
+        this.resources=data
+      }
+    })
   }
 
 }

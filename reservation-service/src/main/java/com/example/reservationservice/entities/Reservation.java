@@ -2,6 +2,7 @@ package com.example.reservationservice.entities;
 
 import com.example.reservationservice.ressource.Ressource;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -31,6 +32,6 @@ public class Reservation {
     private int ressource_id;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonIgnoreProperties("reservations")
     private Personne personne;
 }

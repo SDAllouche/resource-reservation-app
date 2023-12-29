@@ -1,6 +1,7 @@
 package com.example.reservationservice.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -23,6 +24,6 @@ public class Personne {
     private String fonction;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "personne")
-    @JsonManagedReference
+    @JsonIgnoreProperties("personne")
     private List<Reservation> reservations;
 }

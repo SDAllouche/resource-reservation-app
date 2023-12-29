@@ -50,6 +50,13 @@ public class ReservationServiceImp implements ReservationService {
     public Reservation updateReservation(int id, Reservation reservation) {
         Reservation existingReservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Reservation not found with id " + id));
+        existingReservation.setNom(reservation.getNom());
+        existingReservation.setContexte(reservation.getContexte());
+        existingReservation.setDate(reservation.getDate());
+        existingReservation.setDuree(reservation.getDuree());
+        existingReservation.setRessource(reservation.getRessource());
+        existingReservation.setRessource_id(reservation.getRessource_id());
+        existingReservation.setPersonne(reservation.getPersonne());
         return reservationRepository.save(existingReservation);
     }
 
@@ -66,6 +73,10 @@ public class ReservationServiceImp implements ReservationService {
     public Personne updatePersonne(int id, Personne personne) {
         Personne existingPersonne = personneRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Personne not found with id " + id));
+        existingPersonne.setNom(personne.getNom());
+        existingPersonne.setEmail(personne.getEmail());
+        existingPersonne.setFonction(personne.getFonction());
+        existingPersonne.setReservations(personne.getReservations());
         return personneRepository.save(existingPersonne);
     }
 
