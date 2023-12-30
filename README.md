@@ -26,10 +26,10 @@ The aim of this project is to create a distributed system based on micro-service
 <table align="center">
   <tr><img src="screenshots/52.png"/></tr>
 </table>
-
+<br><br>
 ## Project Structure 
 
-
+<br><br>
 ## Eureka Service 
 <table align="center">
   <tr>
@@ -42,22 +42,20 @@ The aim of this project is to create a distributed system based on micro-service
   </tr>
 </table>
 
-## Config Service
+<br><br>
+## Config & Gateway Service
 <table align="center">
   <tr>
-    <th>Config with Actuator</th>
+    <th>Config Actuator</th>
+    <th>Gateway Actuator</th>
   </tr>
   <tr>
     <td><img src="screenshots/8.png"/></td>
+    <td><img src="screenshots/7.png"/></
   </tr>
 </table>
 
-## Gateway Service
-<table align="center">
-  <tr><th>Gateway with Actuator</th></tr>
-  <tr><td><img src="screenshots/7.png"/></td></tr>
-</table>
-
+<br><br>
 ## Ressource Service API Doc
 <table align="center">
   <tr>
@@ -83,6 +81,7 @@ The aim of this project is to create a distributed system based on micro-service
   </tr>
 </table>
 
+<br><br>
 ## Reservation Service API Doc
 <table align="center">
   <tr>
@@ -96,71 +95,138 @@ The aim of this project is to create a distributed system based on micro-service
     <th>Get Reservation</th>
     <th>Post Personne</th>
   <tr>
-    <td><img src="screenshots/16.png"/></td>
     <td><img src="screenshots/17.png"/></td>
+    <td><img src="screenshots/18.png"/></td>
   </tr>
   </tr>
     <th>Update Reservation</th>
     <th>Delete Personne</th>
   <tr>
-    <td><img src="screenshots/18.png"/></td>
     <td><img src="screenshots/19.png"/></td>
+    <td><img src="screenshots/20.png"/></td>
   </tr>
 </table>
 
-## Violation Service
-<table align="center">
-  <tr>
-    <th>Rest</th>
-    <th>SOAP</th>
-   </tr>
-  <tr>
-    <td><img src="Screenshots/34.png"/></td>
-    <td><img src="Screenshots/36.png"/></td>
-  </tr>
-    <th>GraphQL</th>
-    <th>GRPC</th>
-  <tr>
-    <td><img src="Screenshots/32.png"/></td>
-    <td><img src="Screenshots/30.png"/></td>
-  </tr>
-</table>
+<br><br>
+## OpenFeign & CircuitBreaker
 
-## Web Application
+<br><br>
+## Angular Frontend
 <table align="center">
   <tr>
     <th>Authentication</th>
     <th>Home</th>
    </tr>
   <tr>
-    <td><img src="Screenshots/9.png"/></td>
-    <td><img src="Screenshots/10.png"/></td>
+    <td><img src="screenshots/51.png"/></td>
+    <td><img src="screenshots/24.png"/></td>
   </tr>
   <tr>
-    <th>Table</th>
+    <th>Ressource Table</th>
     <th>Search</th>
   </tr>  
   <tr>
-    <td><img src="Screenshots/19.png"/></td>
-    <td><img src="Screenshots/23.png"/></td>
-  </tr>
-  <tr>
-    <th>Owner Detail</th>
-    <th>Violation Detail</th>
-  </tr>  
-  <tr>
-    <td><img src="Screenshots/15.png"/></td>
-    <td><img src="Screenshots/22.png"/></td>
+    <td><img src="screenshots/25.png"/></td>
+    <td><img src="screenshots/26.png"/></td>
   </tr>
   <tr>
     <th>Add</th>
-    <th>Update</th>
+    <th>Overview</th>
   </tr>
   <tr>
-    <td><img src="Screenshots/17.png"/></td>
-    <td><img src="Screenshots/18.png"/></td>
+    <td><img src="screenshots/27.png"/></td>
+    <td><img src="screenshots/28.png"/></td>
+  </tr>
+  <tr>
+    <th>Update</th>
+    <th>Overview</th>
+  </tr>
+  <tr>
+    <td><img src="screenshots/29.png"/></td>
+    <td><img src="screenshots/30.png"/></td>
+  </tr>
+  <tr>
+    <th>Ressource Reservation</th>
+    <th>Overview</th>
+  </tr>
+  <tr>
+    <td><img src="screenshots/32.png"/></td>
+    <td><img src="screenshots/33.png"/></td>
   </tr>
 </table>
+<br><br>
+<table align="center">
+  <tr>
+    <th>Reservation Table</th>
+    <th>Search</th>
+  </tr>  
+  <tr>
+    <td><img src="screenshots/34.png"/></td>
+    <td><img src="screenshots/35.png"/></td>
+  </tr>
+  <tr>
+    <th>Add</th>
+    <th>Overview</th>
+  </tr>
+  <tr>
+    <td><img src="screenshots/36.png"/></td>
+    <td><img src="screenshots/37.png"/></td>
+  </tr>
+  <tr>
+    <th>Update</th>
+    <th>Overview</th>
+  </tr>
+  <tr>
+    <td><img src="screenshots/39.png"/></td>
+    <td><img src="screenshots/40.png"/></td>
+  </tr>
+  <tr>
+    <th>Delete</th>
+    <th>Reservation detail</th>
+  </tr>
+  <tr>
+    <td><img src="screenshots/41.png"/></td>
+    <td><img src="screenshots/38.png"/></td>
+  </tr>
+</table>
+<br><br>
+<table align="center">
+  <tr>
+    <th>Personne Table</th>
+    <th>Search</th>
+  </tr>  
+  <tr>
+    <td><img src="screenshots/42.png"/></td>
+    <td><img src="screenshots/43.png"/></td>
+  </tr>
+  <tr>
+    <th>Add</th>
+    <th>Overview</th>
+  </tr>
+  <tr>
+    <td><img src="screenshots/44.png"/></td>
+    <td><img src="screenshots/45.png"/></td>
+  </tr>
+  <tr>
+    <th>Update</th>
+    <th>Overview</th>
+  </tr>
+  <tr>
+    <td><img src="screenshots/46.png"/></td>
+    <td><img src="screenshots/47.png"/></td>
+  </tr>
+  <tr>
+    <th>Delete</th>
+    <th>Personne detail</th>
+  </tr>
+  <tr>
+    <td><img src="screenshots/48.png"/></td>
+    <td><img src="screenshots/49.png"/></td>
+  </tr>
+</table>
+
+## Application Security
+
 
 
 ## License
