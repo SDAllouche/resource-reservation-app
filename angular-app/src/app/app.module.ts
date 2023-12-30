@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {HttpClientModule} from "@angular/common/http";
 import {KeycloakAngularModule, KeycloakService} from "keycloak-angular";
-import {ResourceComponent} from "./pages/resource/resource.component";
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -35,7 +34,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     KeycloakAngularModule
   ],
   providers: [
-    //{provide : APP_INITIALIZER, deps : [KeycloakService],useFactory : initializeKeycloak, multi : true}
+    {provide : APP_INITIALIZER, deps : [KeycloakService],useFactory : initializeKeycloak, multi : true}
   ],
   bootstrap: [AppComponent]
 })

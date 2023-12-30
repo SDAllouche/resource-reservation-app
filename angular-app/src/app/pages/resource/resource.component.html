@@ -18,9 +18,6 @@
             </div>
           </form>
         </div>
-        <!--<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateResourceModal" *ngIf="selectedResourceId !== null">
-          Update Resource
-        </button>-->
         <div class="col-md-6">
           <button class="btn btn-outline-warning rounded-5" data-bs-toggle="modal" data-bs-target="#createResourceModal">
             <i class="bi bi-plus-lg"></i>
@@ -55,6 +52,9 @@
                     <i class="bi bi-trash"></i>
                   </button>
                 </td>
+                <td>
+                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reserverModal" (click)="selectResource(resource)">Reserver</button>
+                </td>
               </tr>
               </tbody>
             </table>
@@ -65,7 +65,7 @@
   </div>
 </div>
 
-<div class="modal fade" id="updateResourceModal" tabindex="-1" aria-labelledby="updateResourceModalLabel" aria-hidden="true" *ngIf="selectedResourceId !== null">
+<div class="modal fade" id="updateResourceModal" tabindex="-1" aria-labelledby="updateResourceModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -74,7 +74,10 @@
       </div>
       <div class="modal-body">
         <input [(ngModel)]="newResource.nom" placeholder="Resource Nom" class="form-control mb-2">
-        <input [(ngModel)]="newResource.type" placeholder="Resource Type" class="form-control mb-2">
+        <select [(ngModel)]="newResource.type" class="form-control mb-2">
+          <option value="" disabled [selected]="true">Select Type</option>
+          <option *ngFor="let type of types" [value]="type">{{ type }}</option>
+        </select>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -93,7 +96,10 @@
       </div>
       <div class="modal-body">
         <input [(ngModel)]="newResource.nom" placeholder="Resource Nom" class="form-control mb-2">
-        <input [(ngModel)]="newResource.type" placeholder="Resource Type" class="form-control mb-2">
+        <select [(ngModel)]="newResource.type" class="form-control mb-2">
+          <option value="" disabled [selected]="true">Select Type</option>
+          <option *ngFor="let type of types" [value]="type">{{ type }}</option>
+        </select>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -102,4 +108,33 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="reserverModal" tabindex="-1" aria-labelledby="reserverModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reserverModalLabel">Create Reservation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input [(ngModel)]="newReservation.nom" placeholder="Reservation Name" class="form-control mb-2">
+        <input [(ngModel)]="newReservation.contexte" placeholder="Contexte" class="form-control mb-2">
+        <input type="date" [(ngModel)]="newReservation.date" placeholder="Date" class="form-control mb-2">
+        <input [(ngModel)]="newReservation.duree" placeholder="Duree" class="form-control mb-2">
+        <input type="hidden" [(ngModel)]="newReservation.ressource_id" placeholder="Ressource id" class="form-control mb-2">
+        <!--<select [(ngModel)]="newReservation.ressource" class="form-control mb-2">-->
+        <select [ngModel]="isPersonneSelected ? newReservation.personne : ''"
+                (ngModelChange)="onPersonneChange($event)" class="form-control mb-2">
+          <option value="" disabled [selected]="!isPersonneSelected">Select Personne</option>
+          <option *ngFor="let personne of personnes" [ngValue]="personne">{{ personne.nom }}</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="createReservation()">Reserver</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 

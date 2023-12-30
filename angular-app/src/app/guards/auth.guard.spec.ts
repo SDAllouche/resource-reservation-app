@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { CanActivateFn } from '@angular/router';
 
-// @ts-ignore
 import { authGuard } from './auth.guard';
 
 describe('authGuard', () => {

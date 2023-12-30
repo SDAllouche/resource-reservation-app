@@ -19,7 +19,7 @@
           </form>
         </div>
         <div class="col-md-6">
-          <button class="btn btn-outline-warning rounded-5" (click)="createReservation()">
+          <button class="btn btn-outline-warning rounded-5" data-bs-toggle="modal" data-bs-target="#createReservationModal">
             <i class="bi bi-plus-lg"></i>
           </button>
         </div>
@@ -49,10 +49,10 @@
                 <td>{{ reservation.ressource.nom }}</td>
                 <td>{{ reservation.personne.nom}}</td>
                 <td>
-                  <button class="btn btn-success" (click)="getDetail(reservation)">Details</button>
+                  <button class="btn btn-success" (click)="getDetail(reservation.id)">Details</button>
                 </td>
                 <td>
-                  <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateReservationModal" (click)="selectReservation(reservation)">
+                  <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateReservationModal" (click)="selectReservation(reservation)">
                     <i class="bi bi-pen"></i>
                   </button>
                 </td>
@@ -71,7 +71,7 @@
   </div>
 </div>
 
-<div class="modal fade" id="updateReservationModal" tabindex="-1" aria-labelledby="updateReservationModalLabel" aria-hidden="true" *ngIf="selectedReservationId !== null">
+<div class="modal fade" id="updateReservationModal" tabindex="-1" aria-labelledby="updateReservationModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -81,11 +81,48 @@
       <div class="modal-body">
         <input [(ngModel)]="newReservation.nom" placeholder="Reservation Name" class="form-control mb-2">
         <input [(ngModel)]="newReservation.contexte" placeholder="Contexte" class="form-control mb-2">
-        <!-- Additional fields for 'Date', 'Duree', 'Ressource', and 'Personne' -->
+        <input type="date" [(ngModel)]="newReservation.date" placeholder="Date" class="form-control mb-2">
+        <input [(ngModel)]="newReservation.duree" placeholder="Duree" class="form-control mb-2">
+        <input type="hidden" [(ngModel)]="newReservation.ressource_id" placeholder="Ressource id" class="form-control mb-2">
+        <input type="hidden" [(ngModel)]="newReservation.ressource" placeholder="Ressource" class="form-control mb-2">
+        <input type="hidden" [(ngModel)]="newReservation.personne" placeholder="Personne" class="form-control mb-2">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="updateReservation()">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="createReservationModal" tabindex="-1" aria-labelledby="createReservationModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createReservationModalLabel">Create Reservation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input [(ngModel)]="newReservation.nom" placeholder="Reservation Name" class="form-control mb-2">
+        <input [(ngModel)]="newReservation.contexte" placeholder="Contexte" class="form-control mb-2">
+        <input type="date" [(ngModel)]="newReservation.date" placeholder="Date" class="form-control mb-2">
+        <input [(ngModel)]="newReservation.duree" placeholder="Duree" class="form-control mb-2">
+        <input type="hidden" [(ngModel)]="newReservation.ressource_id" placeholder="Ressource id" class="form-control mb-2">
+        <!--<select [(ngModel)]="newReservation.ressource" class="form-control mb-2">-->
+        <select [ngModel]="isRessourceSelected ? newReservation.ressource : ''"
+                (ngModelChange)="onRessourceChange($event)" class="form-control mb-2">
+          <option value="" disabled [selected]="!isRessourceSelected">Select Ressource</option>
+          <option *ngFor="let ressource of ressources" [ngValue]="ressource">{{ ressource.nom }}</option>
+        </select>
+        <select [ngModel]="isPersonneSelected ? newReservation.personne : ''"
+                (ngModelChange)="onPersonneChange($event)" class="form-control mb-2">
+          <option value="" disabled [selected]="!isPersonneSelected">Select Personne</option>
+          <option *ngFor="let personne of personnes" [ngValue]="personne">{{ personne.nom }}</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="createReservation()">Update</button>
       </div>
     </div>
   </div>

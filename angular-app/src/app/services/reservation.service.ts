@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {Reservation} from "../models/reservation.model";
+import {Resource} from "../models/ressource.model";
+import {Personne} from "../models/personne.model";
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +11,8 @@ import {Reservation} from "../models/reservation.model";
 export class ReservationService {
 
   private apiUrl = 'http://localhost:8888/RESERVATION-SERVICE/reservations';
+  private personneUrl = 'http://localhost:8888/RESERVATION-SERVICE/personnes';
+  private ressourceUrl = 'http://localhost:8888/RESSOURCE-SERVICE/ressources';
 
   reservations!: Reservation[];
 
@@ -18,6 +22,14 @@ export class ReservationService {
         this.reservations = data;
       }
     });
+  }
+
+  getResources(): Observable<Resource[]> {
+    return this.http.get<Resource[]>(this.ressourceUrl);
+  }
+
+  getPersonnes(): Observable<Personne[]> {
+    return this.http.get<Personne[]>(this.personneUrl);
   }
 
   getReservations(): Observable<Reservation[]> {

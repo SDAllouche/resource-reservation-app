@@ -3,11 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 import {ResourceComponent} from "./pages/resource/resource.component";
 import {ReservationComponent} from "./pages/reservation/reservation.component";
 import {PersonneComponent} from "./pages/personne/personne.component";
+import {ReservationDetailComponent} from "./pages/reservation-detail/reservation-detail.component";
+import {PersonneDetailComponent} from "./pages/personne-detail/personne-detail.component";
+import {AuthGuard} from "./guards/auth.guard";
 
 const routes: Routes = [
-  {path : "ressources" , component : ResourceComponent},
+  {path : "ressources" , component : ResourceComponent,canActivate:[AuthGuard], data : { roles:['USER'] }},
   {path : "reservations" , component : ReservationComponent},
   {path : "personnes" , component : PersonneComponent},
+  {path : "reservation-detail/:id" , component : ReservationDetailComponent},
+  {path : "personne-detail/:id" , component : PersonneDetailComponent},
 ];
 
 @NgModule({

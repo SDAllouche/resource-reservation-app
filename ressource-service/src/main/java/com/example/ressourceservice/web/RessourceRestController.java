@@ -1,7 +1,9 @@
 package com.example.ressourceservice.web;
 
 import com.example.ressourceservice.entities.Ressource;
+import com.example.ressourceservice.enums.RessourceType;
 import com.example.ressourceservice.service.RessourceService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,5 +48,10 @@ public class RessourceRestController {
     public ResponseEntity<Void> deleteRessource(@PathVariable int id) {
         ressourceService.deleteRessource(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/types")
+    public ResponseEntity<RessourceType[]> getTypes() {
+        return new ResponseEntity<>(RessourceType.values(), HttpStatus.OK);
     }
 }
