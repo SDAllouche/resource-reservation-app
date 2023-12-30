@@ -6,8 +6,10 @@ import {PersonneComponent} from "./pages/personne/personne.component";
 import {ReservationDetailComponent} from "./pages/reservation-detail/reservation-detail.component";
 import {PersonneDetailComponent} from "./pages/personne-detail/personne-detail.component";
 import {AuthGuard} from "./guards/auth.guard";
+import {WelcomeComponent} from "./pages/welcome/welcome.component";
 
 const routes: Routes = [
+  {path : "", component : WelcomeComponent},
   {path : "ressources" , component : ResourceComponent,canActivate:[AuthGuard], data : { roles:['USER'] }},
   {path : "reservations" , component : ReservationComponent},
   {path : "personnes" , component : PersonneComponent},

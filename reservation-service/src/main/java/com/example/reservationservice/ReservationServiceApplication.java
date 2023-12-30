@@ -30,6 +30,8 @@ public class ReservationServiceApplication {
 										 PersonneRepository personneRepository, RessourceOpenFeign ressourceOpenFeign){
 		return args -> {
 
+			int k=1;
+
 			for (int i = 1; i <= 10; i++) {
 
 				Personne personne=new Personne();
@@ -48,8 +50,8 @@ public class ReservationServiceApplication {
 					Ressource ressource = ressourceOpenFeign.getRessourceById(random.nextInt(1,10));
 
 					Reservation reservation=new Reservation();
-					reservation.setNom("Reservation "+j);
-					reservation.setContexte("context "+j);
+					reservation.setNom("Reservation "+k);
+					reservation.setContexte("context "+k);
 					reservation.setDate(new Date());
 					reservation.setDuree(random.nextInt(1,4));
 					reservation.setPersonne(personne);
@@ -58,6 +60,8 @@ public class ReservationServiceApplication {
 
 					reservationRepository.save(reservation);
 					reservations.add(reservation);
+
+					k++;
 				}
 
 				personneRepository.save(personne);
