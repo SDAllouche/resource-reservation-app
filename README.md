@@ -539,12 +539,8 @@ services:
     environment:
       - DISCOVERY_SERVICE_URL=http://discovery-service:8761/eureka
       - CONFIG_SERVICE_URL=http://config-service:9999
-      - JWT_ISSUER_URI:http://keycloak:8080/realms/sdia-realm
-      - JWT_JWK_SET_URI:http://keycloak:8080/realms/sdia-realm/protocol/openid-connect/certs
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8081/actuator/health" ]
-      interval: 10s
-      retries: 4
+      - JWT_ISSUER_URI=http://keycloak:8080/realms/sdia-realm
+      - JWT_JWK_SET_URI=http://keycloak:8080/realms/sdia-realm/protocol/openid-connect/certs
     depends_on:
       config-service:
         condition: service_healthy
@@ -561,8 +557,7 @@ services:
       - JWT_ISSUER_URI:http://keycloak:8080/realms/sdia-realm
       - JWT_JWK_SET_URI:http://keycloak:8080/realms/sdia-realm/protocol/openid-connect/certs
     depends_on:
-      ressource-service:
-        condition: service_healthy
+      - ressource-service
   angular-app:
     build: ./angular-app
     container_name: angular-app
@@ -579,6 +574,30 @@ volumes:
   postgres_data:
   pgadmin_data:
 ```
+<table align="center">
+  <tr>
+    <th>Running Containers</th>
+    <th>Discovery</th>
+   </tr>
+  <tr>
+    <td><img src="screenshots/60.png"/></td>
+    <td><img src="screenshots/56.png"/></td>
+  </tr>
+  <tr>
+    <th>Create Realm</th>
+    <th>Keycloak Postgres DB</th>
+   </tr>
+  <tr>
+    <td><img src="screenshots/57.png"/></td>
+    <td><img src="screenshots/58.png"/></td>
+  </tr>
+  <tr>
+    <th colspan=2>Angular App</th>
+   </tr>
+  <tr>
+    <td colspan=2><img src="screenshots/59.png"/></td>
+  </tr>
+</table>
 
 ## License
 [MIT LICENSE](LICENSE)
