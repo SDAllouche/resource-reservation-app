@@ -2,10 +2,15 @@
 
 ## Introduction
 
-The aim of this project is to create a distributed system based on micro-services.This application allows to manage and automate the process of vehicle infractions following speed overruns detected by automatic radars. The system consists of three micro-services :
-- Registration Service : allows to manage vehicles and their owners.
-- Radar Service : allows to manage radars.
-- Violation Service : manage the cars violations that detected by radars.
+We want to create an application based on a micro-service architecture that allows you to manage reservations regarding resources. Each reservation concerns a single resource. The system consists of three technical micro-services to be set up are:
+- The Gateway service based on Spring cloud Gateway
+- The Discovery service based on Eureka Server Discovery
+- The configuration service based on Spring cloud config</br>
+
+And two other micro-services :  
+- Ressource Service : which allows you to manage ressources, a resource is defined by its
+id, its name, its type (MATERIEL_INF0, MATERIEL_AUDIO_VUSUEL)
+- Reservation Service : that allows you to manage reservations made by people a reservation is defined by its id, its name, its context, its date, its duration. Each reservation is made by one person. A person is defined by its id, name, email and function.
 
 ## Outils
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
@@ -13,7 +18,6 @@ The aim of this project is to create a distributed system based on micro-service
 ![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
 ![Bootstrap](https://img.shields.io/badge/bootstrap-%238511FA.svg?style=for-the-badge&logo=bootstrap&logoColor=white)
 ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
-![GraphQL](https://img.shields.io/badge/GraphQl-E10098?style=for-the-badge&logo=graphql&logoColor=white)
 ```
 - Spring Boot
 - Spring Cloud
@@ -31,7 +35,71 @@ The aim of this project is to create a distributed system based on micro-service
 ## Project Structure 
 ```
 Ressource-Reservation-App
-  |__
+
+  |__ angular-app
+        |__ src
+            |__ assets
+            |__ app
+                |__ guard
+                |__ models
+                |__ pages
+                    |__ personne-detail
+                    |__ personne
+                    |__ reservation-detail
+                    |__ reservation
+                    |__ ressource
+                    |__ welcome
+                |__ services
+
+  |__ config-git-repo
+        |__ applications properties files
+
+  |__ config-service
+        |__ src
+            |__ main
+                |__ java/com/exemple/configservice
+                |__ resources
+
+  |__ discovery-service
+        |__ src
+            |__ main
+                |__ java/com/exemple/discoveryservice
+                |__ resources
+
+  |__ gateway-service
+        |__ src
+            |__ main
+                |__ java/com/exemple/gatewayservice
+                |__ resources
+
+  |__ reservation-service
+        |__ src
+            |__ main
+                |__ java/com/exemple/reservationservice
+                    |__ dto
+                    |__ entities
+                    |__ enums
+                    |__ mappers
+                    |__ repository
+                    |__ ressource
+                    |__ security
+                    |__ service
+                    |__ web
+                |__ resources
+
+  |__ ressource-service
+        |__ src
+            |__ main
+                |__ java/com/exemple/ressourceservice
+                    |__ dto
+                    |__ entities
+                    |__ enums
+                    |__ mappers
+                    |__ repository
+                    |__ security
+                    |__ service
+                    |__ web
+                |__ resources
 ```
 <br><br>
 ## Eureka Service 
