@@ -30,7 +30,7 @@ id, its name, its type (MATERIEL_INF0, MATERIEL_AUDIO_VUSUEL)
 <table align="center">
   <tr><img src="screenshots/52.png"/></tr>
 </table>
-<br><br>
+<br>
 
 ## Project Structure 
 ```
@@ -101,7 +101,8 @@ Ressource-Reservation-App
                     |__ web
                 |__ resources
 ```
-<br><br>
+<br>
+
 ## Eureka Service 
 <table align="center">
   <tr>
@@ -113,8 +114,8 @@ Ressource-Reservation-App
     <td><img src="screenshots/6.png"/></td>
   </tr>
 </table>
+<br>
 
-<br><br>
 ## Config & Gateway Service
 <table align="center">
   <tr>
@@ -126,8 +127,8 @@ Ressource-Reservation-App
     <td><img src="screenshots/7.png"/></
   </tr>
 </table>
+<br>
 
-<br><br>
 ## Ressource Service API Doc
 <table align="center">
   <tr>
@@ -152,8 +153,8 @@ Ressource-Reservation-App
     <td><img src="screenshots/14.png"/></td>
   </tr>
 </table>
+<br>
 
-<br><br>
 ## Reservation Service API Doc
 <table align="center">
   <tr>
@@ -178,8 +179,8 @@ Ressource-Reservation-App
     <td><img src="screenshots/20.png"/></td>
   </tr>
 </table>
+<br>
 
-<br><br>
 ## OpenFeign & Circuit Breaker
 - OpenFeign is a declarative web service client that allows you to define RESTful web services as interfaces, and it automatically translates these interfaces into HTTP requests. This approach simplifies the integration of external services into your application.
 - Circuit breaker is a design pattern used in distributed systems to prevent a single service failure from cascading and causing the entire system to fail. It is a way to handle faults and latency in a distributed environment. The circuit breaker pattern is commonly associated with the idea of providing fault tolerance and resilience.
@@ -207,7 +208,8 @@ public interface RessourceOpenFeign {
     }
 }
 ```
-<br><br>
+<br>
+
 ## Angular Frontend
 <table align="center">
   <tr>
@@ -321,7 +323,7 @@ public interface RessourceOpenFeign {
     <td><img src="screenshots/49.png"/></td>
   </tr>
 </table>
-<br><br>
+<br>
 
 ## Application Security
 To Secure the microservices, we need and an authentication layer and authorisation protocol, Therefore we will use OIDC, OAuth and Keycloak as a provider.
