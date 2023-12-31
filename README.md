@@ -27,8 +27,12 @@ The aim of this project is to create a distributed system based on micro-service
   <tr><img src="screenshots/52.png"/></tr>
 </table>
 <br><br>
-## Project Structure 
 
+## Project Structure 
+```
+Ressource-Reservation-App
+  |__
+```
 <br><br>
 ## Eureka Service 
 <table align="center">
@@ -108,8 +112,33 @@ The aim of this project is to create a distributed system based on micro-service
 </table>
 
 <br><br>
-## OpenFeign & CircuitBreaker
+## OpenFeign & Circuit Breaker
+- OpenFeign is a declarative web service client that allows you to define RESTful web services as interfaces, and it automatically translates these interfaces into HTTP requests. This approach simplifies the integration of external services into your application.
+- Circuit breaker is a design pattern used in distributed systems to prevent a single service failure from cascading and causing the entire system to fail. It is a way to handle faults and latency in a distributed environment. The circuit breaker pattern is commonly associated with the idea of providing fault tolerance and resilience.
+```java
+@FeignClient(name = "RESSOURCE-SERVICE",configuration = OpenFiegnConfiguration.class)
+public interface RessourceOpenFeign {
 
+    @GetMapping("/ressources/{id}")
+    @CircuitBreaker(name = "ressourceService", fallbackMethod = "getDefaultRessource")
+    Ressource getRessourceById(@PathVariable("id") int id);
+
+    @GetMapping("/ressources")
+    @CircuitBreaker(name = "ressourceService", fallbackMethod = "getAllDefaultRessources")
+    List<Ressource> getAllRessources();
+
+    default Ressource getDefaultRessource(int id, Exception exception){
+        Ressource ressource=new Ressource();
+        ressource.setId(id);
+        ressource.setNom("Not Vailable");
+        ressource.setType(null);
+        return ressource;
+    }
+    default List<Ressource> getAllDefaultRessources(Exception exception){
+        return List.of();
+    }
+}
+```
 <br><br>
 ## Angular Frontend
 <table align="center">
@@ -224,9 +253,121 @@ The aim of this project is to create a distributed system based on micro-service
     <td><img src="screenshots/49.png"/></td>
   </tr>
 </table>
+<br><br>
 
 ## Application Security
+To Secure the microservices, we need and an authentication layer and authorisation protocol, Therefore we will use OIDC, OAuth and Keycloak as a provider.
 
+### 1. OAuth
+OAuth is an authorization framework that allows a third-party application to obtain limited access to an HTTP service on behalf of a resource owner, such as a user. It is not an authentication protocol, instead, it focuses on delegated access and authorization, and it supports various grant types, such as Authorization Code, Implicit, Resource Owner Password Credentials, and Client Credentials.
+<table align="center">
+  <tr>
+    <th>How It Work</th>
+   </tr>
+  <tr>
+    <td><img src="screenshots/54.png"/></td>
+  </tr>
+</table>
+<br>
+
+### 2. OIDC
+OpenID Connect is an identity layer on top of OAuth. It adds an authentication layer to OAuth, allowing clients to verify the identity of the end-user based on the authentication performed by an authorization server, as well as to obtain basic profile information about the user. OIDC Components:
+- ID Token: A JWT (JSON Web Token) that contains information about the authenticated user.
+- UserInfo Endpoint: An endpoint where additional user information can be retrieved.
+- Discovery: A mechanism for dynamically discovering OIDC endpoints and configuration.
+<table align="center">
+  <tr>
+    <th>How It Work</th>
+   </tr>
+  <tr>
+    <td><img src="screenshots/55.png"/></td>
+  </tr>
+</table>
+<br>
+
+### 3. Keycloak
+Keycloak is an open-source Identity and Access Management solution. It provides functionalities for user authentication, authorization, and management, and it supports various standards, including OAuth and OIDC. Keycloak can be configured as an OAuth Authorization Server and an OIDC Provider. Clients in Keycloak are registered with the necessary settings and can use OAuth or OIDC flows for authentication and authorization. Keycloak's Role:
+- Authentication: Keycloak handles the authentication process, including supporting various identity providers.
+- Authorization: Keycloak serves as an authorization server, managing access tokens and enforcing authorization policies.
+- User Management: Keycloak allows administrators to manage users, roles, and permissions.
+- Single Sign-On (SSO): Keycloak supports SSO, allowing users to log in once and access multiple applications without re-authenticating.
+<table align="center">
+  <tr>
+    <th>How It Work</th>
+   </tr>
+  <tr>
+    <td><img src="screenshots/53.png"/></td>
+  </tr>
+</table>
+<br>
+
+### 4. Steps
+<table align="center">
+  <tr>
+    <th>Run Keycloak</th>
+    <th>Authentication</th>
+   </tr>
+  <tr>
+    <td><img src="screenshots/2.png"/></td>
+    <td><img src="screenshots/3.png"/></td>
+  </tr>
+  <tr>
+    <th>Create Realm</th>
+    <th>Create Client</th>
+   </tr>
+  <tr>
+    <td><img src="screenshots/4.png"/></td>
+    <td><img src="screenshots/21.png"/></td>
+  </tr>
+  <tr>
+    <th>Create Users</th>
+    <th>Create Roles</th>
+   </tr>
+  <tr>
+    <td><img src="screenshots/22.png"/></td>
+    <td><img src="screenshots/23.png"/></td>
+  </tr>
+</table>
+
+- Implementing Authentication: When a user attempts to log in to your application, they are redirected to Keycloak. Here, they authenticate using their credentials. Upon successful authentication, Keycloak issues an ID token (for OIDC) and an access token (JWT). The ID token contains information about the user's identity, while the access token includes user roles and permissions.</br>
+Maven dependency
+```java
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+</dependency>
+```
+Application.properties
+```java
+spring.security.oauth2.resourceserver.jwt.issuer-uri=${JWT_ISSUER_URI:http://localhost:8080/realms/sdia-realm}
+spring.security.oauth2.resourceserver.jwt.jwk-set-uri=${JWT_JWK_SET_URI:http://localhost:8080/realms/sdia-realm/protocol/openid-connect/certs}
+```
+- Securing the Backend (APIs): The backend services validate the JWT on each request. This can be done using Keycloak's adapters or libraries that can validate JWTs. Implement access control checks based on the roles and permissions contained in the JWT. You can use annotations like @PreAuthorize in your controllers for role-based access control.
+```java
+@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+  return http
+    .authorizeHttpRequests(ar->ar.anyRequest().authenticated())
+    .oauth2ResourceServer(o2->o2.jwt(jwt->jwt.jwtAuthenticationConverter(jwtAuthConverter)))
+    .headers(h->h.frameOptions(fo->fo.disable()))
+    .csrf(csrf->csrf.ignoringRequestMatchers("/h2-console/**"))
+    .build();
+}
+```
+- Securing the Frontend Application: Store the tokens securely in the client application . Include the JWT in the Authorization header when making requests to protected resources.
+- Config OpenFeign Rest Interface, so it will be able to access to the Ressource service
+```java
+@Component
+public class OpenFiegnConfiguration implements RequestInterceptor {
+    @Override
+    public void apply(RequestTemplate requestTemplate) {
+        SecurityContext context = SecurityContextHolder.getContext();
+        JwtAuthenticationToken authentication = (JwtAuthenticationToken) context.getAuthentication();
+        String tokenValue = authentication.getToken().getTokenValue();
+        requestTemplate.header("Authorization","Bearer "+tokenValue);
+    }
+}
+```
 
 
 ## License
