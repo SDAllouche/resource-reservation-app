@@ -1,4 +1,4 @@
-# Ressource Reservation Application
+# Resource Reservation Application
 
 ## Introduction
 
