@@ -18,8 +18,8 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="config-service" options="-parameters" />
-      <module name="discovery-service" options="-parameters" />
-      <module name="gateway-service" options="-parameters" />
+      <module name="discovery-service" options="" />
+      <module name="gateway-service" options="" />
       <module name="reservation-service" options="-parameters" />
       <module name="ressource-service" options="-parameters" />
     </option>

@@ -1,44 +1,4 @@
 services:
-  mysql-db-inventory:
-    image: mariadb:10.6
-    container_name: mysql-db-inventory
-    restart: always
-    volumes:
-      - mysql_data:/var/lib/mysql
-    environment:
-      MYSQL_DATABASE: inventory-db
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-      MYSQL_ROOT_PASSWORD: admin
-    ports:
-      - 3306:3306
-    healthcheck:
-      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
-      timeout: 5s
-      retries: 10
-  phpmyadmin:
-    image: phpmyadmin
-    restart: always
-    ports:
-      - 9999:80
-    environment:
-      PMA_HOST: mysql-db-inventory
-      PMA_PORT: 3306
-      PMA_ARBITRARY: 1
-  inventory-service:
-    build: ./inventory-service
-    container_name: inventory-service
-    ports:
-      - '8092:8092'
-    expose:
-      - '8092'
-    restart: always
-    depends_on:
-      - mysql-db-inventory
-    environment:
-      - DB_URL=jdbc:mysql://mysql-db-inventory:3306/inventory-db
-      - JWT_ISSUER_URI=http://localhost:8080/realms/sdia-realm
-      - JWT_JWK_SET_URI=http://keycloak:8080/realms/sdia-realm/protocol/openid-connect/certs
   postgres-service:
     image: postgres
     container_name: postgres-service
@@ -59,13 +19,14 @@ services:
     container_name: pgadmin4
     restart: always
     ports:
-      - "8888:80"
+      - "8083:80"
     environment:
       PGADMIN_DEFAULT_EMAIL: med@gmail.com
       PGADMIN_DEFAULT_PASSWORD: azer
     volumes:
       - pgadmin_data:/var/lib/pgadmin
   keycloak:
+    container_name: keycloak
     image: quay.io/keycloak/keycloak:latest
     environment:
       KC_DB: postgres
@@ -85,26 +46,80 @@ services:
       - '8080'
     depends_on:
       - postgres-service
-  customer-service-thymeleaf:
-    build: ./customer-front-thymeleaf-app
-    container_name: customer-service-thymeleaf
+  discovery-service:
+    build: ./discovery-service
+    container_name: discovery-service
     ports:
-      - '8091:8091'
+      - '8761:8761'
     expose:
-      - '8091'
-    restart: always
-    depends_on:
-      - keycloak
+      - '8761'
+    healthcheck:
+      test: "exit 0"
+  config-service:
+    build: ./config-service
+    container_name: config-service
+    ports:
+      - '9999:9999'
+    expose:
+      - '9999'
     environment:
-      - KEYCLOAK_REDIRECT_URI=http://localhost:8091/login/oauth2/code/sdia-customer-client
-      - KEYCLOAK_ISSUER_URI=http://keycloak:8080/realms/sdia-realm
-      - KEYCLOAK_AUTH=http://localhost:8080/realms/sdia-realm/protocol/openid-connect/auth
-      - KEYCLOAK_AUTH_TOKEN=http://keycloak:8080/realms/sdia-realm/protocol/openid-connect/token
+      - DISCOVERY_SERVICE_URL=http://discovery-service:8761/eureka
+    healthcheck:
+      test: "exit 0"
+    depends_on:
+      discovery-service:
+        condition: service_healthy
+  gateway-service:
+    build: ./gateway-service
+    container_name: gateway-service
+    ports:
+      - '8888:8888'
+    expose:
+      - '8888'
+    environment:
+      - DISCOVERY_SERVICE_URL=http://discovery-service:8761/eureka
+      - CONFIG_SERVICE_URL=http://config-service:9999
+    depends_on:
+      config-service:
+        condition: service_healthy
+      discovery-service:
+        condition: service_healthy
+  ressource-service:
+    build: ./ressource-service
+    container_name: ressource-service
+    ports:
+      - '8081:8081'
+    expose:
+      - '8081'
+    environment:
+      - DISCOVERY_SERVICE_URL=http://discovery-service:8761/eureka
+      - CONFIG_SERVICE_URL=http://config-service:9999
+      - JWT_ISSUER_URI=http://localhost:8080/realms/sdia-realm
       - JWT_JWK_SET_URI=http://keycloak:8080/realms/sdia-realm/protocol/openid-connect/certs
-      - INVENTORY_SERVICE_BASE_URI=http://inventory-service:8092
-  angular-front-app:
-    build: ./angular-front-app
-    container_name: angular-front-app
+    depends_on:
+      - config-service
+      - gateway-service
+      - keycloak
+  reservation-service:
+    build: ./reservation-service
+    container_name: reservation-service
+    ports:
+      - '8082:8082'
+    expose:
+      - '8082'
+    environment:
+      - DISCOVERY_SERVICE_URL=http://discovery-service:8761/eureka
+      - CONFIG_SERVICE_URL=http://config-service:9999
+      - JWT_ISSUER_URI=http://localhost:8080/realms/sdia-realm
+      - JWT_JWK_SET_URI=http://keycloak:8080/realms/sdia-realm/protocol/openid-connect/certs
+    depends_on:
+      - config-service
+      - gateway-service
+      - keycloak
+      - ressource-service
+  angular-app:
+    build: ./angular-app
+    container_name: angular-app
     ports:
       - '8085:80'
     expose:
@@ -112,10 +127,9 @@ services:
     restart: always
     depends_on:
       - keycloak
-      - inventory-service
-      - customer-service-thymeleaf
+      - ressource-service
+      - reservation-service
 volumes:
-  mysql_data:
   postgres_data:
   pgadmin_data:
 
